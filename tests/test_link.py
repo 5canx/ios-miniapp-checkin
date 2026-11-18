@@ -7,8 +7,24 @@ import unittest
 from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 import link
+from flow import portable_flow, select
 
 class LinkTests(unittest.TestCase):
+    def test_portable_group_roundtrip_does_not_enable_schedule(self):
+        flow = {'id': 'fixture', 'name': 'Fixture', 'group': '小程序',
+                'blocks': [{'type': 'verify', 'keyword': 'Fixture'}], 'schedule_enabled': True}
+        document = portable_flow(flow)
+        self.assertEqual(document['flows'][0]['group'], '小程序')
+        self.assertNotIn('schedule_enabled', document['flows'][0])
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'flow.json'
+            path.write_text(json.dumps(document))
+            self.assertEqual(select(path, 'fixture')[0]['group'], '小程序')
+            document['flows'][0]['group'] = '   '
+            path.write_text(json.dumps(document))
+            with self.assertRaises(ValueError):
+                select(path, 'fixture')
+
     def test_discovery_does_not_probe_or_wake_the_ui(self):
         class Client:
             def __init__(self, endpoint): pass

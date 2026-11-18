@@ -111,6 +111,8 @@ def select(path, identifier, observe_only=False):
     require(len(matches) == 1, "flow ID must identify exactly one exported flow")
     flow = matches[0]
     require(text_value(flow.get("name")), "missing flow name")
+    if "group" in flow:
+        require(text_value(flow["group"]) and len(flow["group"].strip()) <= 40, "invalid flow group")
     interval = flow.get("interval_minutes", 60)
     require(type(interval) is int and 1 <= interval <= 525600, "interval must be integer minutes in 1..525600")
     count, checks = inspect_blocks(flow.get("blocks"), observe_only=observe_only)
@@ -119,7 +121,7 @@ def select(path, identifier, observe_only=False):
 
 
 def portable_flow(flow):
-    fields = ("id", "name", "blocks", "test_data", "interval_minutes")
+    fields = ("id", "name", "group", "blocks", "test_data", "interval_minutes")
     return {"format": FORMAT, "version": 1, "flows": [{key: flow[key] for key in fields if key in flow}]}
 
 
