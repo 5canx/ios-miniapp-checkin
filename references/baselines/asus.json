@@ -2,7 +2,7 @@
   "version": 1,
   "verified": "profile_verified",
   "observation": {
-    "runner_version": "0.2.5",
+    "runner_version": "0.3.2",
     "host_version": "8.0.80",
     "ios_version": "15.6.1",
     "mini_version": "unavailable",
@@ -12,7 +12,7 @@
       "scale": 3,
       "orientation": "portrait"
     },
-    "flow_sha256": "98cbe000e49647f020410b519c1b74436ff839bc5d7d813fc3983535e26dc9f6",
+    "flow_sha256": "0d0bbec763e58f829cbf97116caa1387b821964578d3344692ac51f61c4d06da",
     "pages": {
       "wx_home": [
         "发现",
@@ -38,6 +38,25 @@
         "个人中心",
         "华硕会员",
         "我的服务",
+        "我的订单"
+      ],
+      "asus_login_prompt": [
+        "登录/注册",
+        "个人中心"
+      ],
+      "asus_login_consent": [
+        "一键绑定手机号码",
+        "华硕使用条款",
+        "隐私政策"
+      ],
+      "asus_phone_consent": [
+        "申请获取并验证你的手机号",
+        "上次提供",
+        "不允许"
+      ],
+      "asus_logged_in": [
+        "头像旁会员身份",
+        "绑定设备",
         "我的订单"
       ]
     }

@@ -2,7 +2,7 @@
   "version": 1,
   "verified": "already_today",
   "observation": {
-    "runner_version": "0.2.5",
+    "runner_version": "0.3.4",
     "host_version": "8.0.80",
     "ios_version": "15.6.1",
     "mini_version": "unavailable",
@@ -12,7 +12,7 @@
       "scale": 3,
       "orientation": "portrait"
     },
-    "flow_sha256": "406431e9ec3b4e699ae23ef221c4ded12f84d21a7ab7cc9f8ae4c6083446c29e",
+    "flow_sha256": "93a2840c12253577e5efa49352dc64e4cc94eac5bb3828f729b8ca6d7bf22bea",
     "pages": {
       "wx_home": [
         "发现",
@@ -44,6 +44,11 @@
         "开启签到提醒",
         "签到玩法",
         "签到送好礼"
+      ],
+      "storm_logged_in": [
+        "影视飓风会员等级",
+        "绑定账号标记",
+        "个人中心"
       ]
     }
   }

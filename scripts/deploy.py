@@ -46,7 +46,7 @@ class Client:
         if not notify:
             message["id"] = self.seq
         request = urllib.request.Request(self.endpoint, json.dumps(message).encode(), self.headers)
-        with self.transport.open(request, timeout=25) as response:
+        with self.transport.open(request, timeout=5 if method == 'initialize' else 25) as response:
             session = response.headers.get("Mcp-Session-Id")
             if session:
                 self.headers["Mcp-Session-Id"] = session
@@ -61,7 +61,13 @@ class Client:
         result = self.rpc("tools/call", {"name": name, "arguments": kwargs})
         require(not result.get("isError"), f"MCP tool failed: {name}; check device lock and tool permissions")
         payload = result.get("structuredContent")
-        require(isinstance(payload, dict) and not payload.get("blocked"), "unexpected MCP result: " + name)
+        if payload is None:
+            text = "\n".join(part.get("text", "") for part in result.get("content", []) if part.get("type") == "text")
+            try:
+                payload = json.loads(text)
+            except ValueError:
+                payload = {"message": text} if text else {"content": result.get("content", [])}
+        require(not isinstance(payload, dict) or (not payload.get("blocked") and payload.get("ok") is not False), "MCP action blocked: " + name)
         return payload
 
 

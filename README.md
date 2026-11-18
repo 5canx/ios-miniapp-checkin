@@ -1,5 +1,7 @@
 # ios-miniapp-checkin
 
+现在可通过 `scripts/link.py` 用 USB 直接读取、修改、备份、部署、运行和控制手机流程，自动回传日志及页面样本。也可作为 `autodam-usb` MCP stdio 服务接入 AI。具体接口与验收边界见 [联动说明](references/control-link.md)。原生录制可自动下载并分析生成脚本候选，见 [录制学习](references/recording-learning.md)；已验证的账号选择见 [登录经验](references/login-workflow.md)。
+
 给 AI 使用的 iPhone 小程序签到 Skill。它能帮助执行者读取已有 autodam 流程，找到已经确认的页面和回执，定位失败的步骤并生成可导入的 JSON。手机端运行编辑器中的功能块，随附 Python 工具运行在电脑上。
 
 ## 调用
