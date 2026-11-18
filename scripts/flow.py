@@ -82,7 +82,15 @@ def inspect_blocks(blocks, depth=0, observe_only=False):
             if coordinate:
                 require(all(numeric(block.get(key), 0, 100000) for key in ("x", "y")), "invalid tap coordinates")
                 require("region" not in block and "timeout_seconds" not in block, "coordinate tap has text conditions")
-            else:
+            if 'reference_width' in block or 'reference_height' in block:
+                require(coordinate and 'coordinate_scale' not in block, 'reference geometry requires same-unit coordinates')
+                require(all(numeric(block.get(k), 1, 100000) for k in ('reference_width', 'reference_height')), 'invalid reference geometry')
+                require(block['x'] < block['reference_width'] and block['y'] < block['reference_height'], 'tap outside reference geometry')
+            if 'reference_scale' in block:
+                require('reference_width' in block and 'reference_height' in block and numeric(block['reference_scale'], .1, 10), 'invalid reference scale')
+            if 'coordinate_scale' in block:
+                require(type(block['coordinate_scale']) in (int, float) and math.isfinite(block['coordinate_scale']) and block['coordinate_scale'] > 0, 'invalid coordinate scale')
+            if not coordinate:
                 require(text_value(block.get("keyword")), "missing text locator")
             require(block.get("match", "contains") in ("exact", "contains"), "unknown text match")
         if kind == "wait":

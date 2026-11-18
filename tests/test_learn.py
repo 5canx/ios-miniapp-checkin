@@ -27,7 +27,7 @@ class LearningTests(unittest.TestCase):
             self.assertEqual(doc['transitions'][0]['observation_delta_seconds'], 15)
             self.assertFalse(any(b['type'] in ('tap', 'wait') for b in flow['blocks']))
 
-    def test_annotation_creates_bounded_selector_candidate_not_claimed_touch(self):
+    def test_annotation_creates_bound_coordinates_without_claiming_verified_touches(self):
         doc = self.document();doc['annotations'] = [{'frame': 1, 'tap_pt': [80, 200]}]
         with tempfile.TemporaryDirectory() as directory:
             result = analyze(doc, directory, final_keyword='终点')
@@ -37,7 +37,18 @@ class LearningTests(unittest.TestCase):
             self.assertFalse(analysis['business_verified'])
             self.assertFalse(analysis['capabilities']['physical_touches'])
             tap = next(b for b in flow['blocks'] if b['type'] == 'tap')
-            self.assertEqual(tap['keyword'], '入口');self.assertIn('region', tap);self.assertNotIn('x', tap)
+            self.assertEqual((tap['x'], tap['y']), (80, 200))
+            self.assertEqual((tap['reference_width'], tap['reference_height'], tap['reference_scale']), (400, 800, 1))
+            self.assertNotIn('keyword', tap);self.assertNotIn('region', tap)
+            book = json.loads((Path(directory) / 'coordinates.json').read_text())
+            self.assertFalse(book['verified']); self.assertIsNone(book['steps'][0]['wait_seconds'])
+
+    def test_bad_annotated_coordinates_are_not_deployed(self):
+        for point in ([float('nan'), 200], [400, 200], [-1, 200], ['80', 200]):
+            doc = self.document(); doc['annotations'] = [{'frame': 1, 'tap_pt': point}]
+            with tempfile.TemporaryDirectory() as directory:
+                result = analyze(doc, directory, final_keyword='终点')
+                self.assertFalse(result['candidate_ready_for_device_test'])
 
     def test_credentials_and_unobserved_final_assertion_are_rejected(self):
         doc = self.document();doc['frames'][1] = frame(25, '短信验证码')

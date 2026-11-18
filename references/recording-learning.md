@@ -28,7 +28,7 @@ python3 scripts/link.py learn --args '{"flow_id":"my-learned-flow","name":"录�
 
 - `analysis.json`：页面、元素定位候选、登录状态变化、转移、缺失信息和证据来源。
 - `navigation.mmd`：按实际观察顺序生成的页面流程图；未知动作明确标记 unknown。
-- `flow-candidate.json`：现有标准功能块格式。标注点能唯一对应文字时，生成限区文字定位，不直接重放坐标。
+- `flow-candidate.json`：现有标准功能块格式。标注点能对应已知页面时生成绑定参考尺寸的坐标点击；入口与最终业务结果保留限区断言。候选首次回放前仍未验证。另写 coordinates.json 保存页面、转移、点位、几何和未知等待。
 - `learning-notes.md`：复用、恢复及验证规则；保持未验收状态。
 
 原始 recording.json 和预览保留在 recording_fetch 返回的私有目录，analysis 的 preview 对应其中的文件。含密码/验证码的页面不进入分析定位或脚本候选。原始文件可能敏感，不复制进仓库。

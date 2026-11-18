@@ -1,0 +1,95 @@
+{
+  "schema": "autodam.coordinate-library.v1",
+  "scope": "WeChat 8.0.80 + ASUS known pages",
+  "geometry": {
+    "width": 428,
+    "height": 926,
+    "scale": 3,
+    "pixel_width": 1284,
+    "pixel_height": 2778,
+    "orientation": "portrait",
+    "space": "screen_points"
+  },
+  "source": "historical real-device successful ASUS profile run; not a check-in receipt",
+  "source_sha256": "1745b0a64b9bd8ed1228f10778674c8cf9a05910108e742f2fc8e306bbad9ab5",
+  "device_verified": true,
+  "autogo_host_verified": false,
+  "steps": [
+    {
+      "id": "wx_home_search",
+      "page": "微信消息列表",
+      "expected_next_page": "搜索页",
+      "bundle_id": "com.tencent.xin",
+      "x": 215,
+      "y": 116.5,
+      "order": 1,
+      "wait_seconds": null,
+      "wait_status": "use native bounded transition wait; no touch timestamps captured"
+    },
+    {
+      "id": "wx_mini_category",
+      "page": "干净搜索页",
+      "expected_next_page": "小程序搜索",
+      "bundle_id": "com.tencent.xin",
+      "x": 39,
+      "y": 172,
+      "order": 2,
+      "wait_seconds": null,
+      "wait_status": "use native bounded transition wait; no touch timestamps captured"
+    },
+    {
+      "id": "wx_query_field",
+      "page": "小程序空查询",
+      "expected_next_page": "搜索输入",
+      "bundle_id": "com.tencent.xin",
+      "x": 198.5,
+      "y": 75,
+      "order": 3,
+      "wait_seconds": null,
+      "wait_status": "use native bounded transition wait; no touch timestamps captured"
+    },
+    {
+      "id": "wx_query_submit",
+      "page": "完整查询已回读",
+      "expected_next_page": "搜索结果",
+      "bundle_id": "com.tencent.xin",
+      "x": 384.5,
+      "y": 74.5,
+      "order": 4,
+      "wait_seconds": null,
+      "wait_status": "use native bounded transition wait; no touch timestamps captured"
+    },
+    {
+      "id": "asus_mine",
+      "page": "已确认华硕首页",
+      "expected_next_page": "华硕个人中心",
+      "bundle_id": "com.tencent.xin",
+      "x": 382,
+      "y": 876.5,
+      "order": 5,
+      "wait_seconds": null,
+      "wait_status": "use native bounded transition wait; no touch timestamps captured"
+    },
+    {
+      "id": "mini_close",
+      "page": "已知小程序/已保存回执",
+      "expected_next_page": "微信搜索或首页",
+      "bundle_id": "com.tencent.xin",
+      "x": 399.1666666667,
+      "y": 69,
+      "order": 6,
+      "wait_seconds": null,
+      "wait_status": "use native bounded transition wait; no touch timestamps captured"
+    }
+  ],
+  "excluded": [
+    "Search result card position is dynamic; match complete miniapp identity before opening.",
+    "No verified swipe or one-click login coordinates in this record."
+  ],
+  "current_recheck": {
+    "runner": "0.3.6",
+    "date": "2026-11-19",
+    "result": "blocked_at_category_transition",
+    "notes": "Home search opened. Category transition stalled; user reports WeChat/system UI frozen. Keep historical coordinates; no evidence proves they are invalid. Paused tests for UI recovery."
+  }
+}

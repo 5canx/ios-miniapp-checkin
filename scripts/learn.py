@@ -60,7 +60,7 @@ def analyze(recording, out, flow_id='recording-candidate', name='录制生成候
     out.mkdir(parents=True, exist_ok=True, mode=0o700)
     require(not any(out.iterdir()), 'analysis directory must be new; retain the previous analysis')
     annotations = {a['frame']: a for a in recording.get('annotations', []) if isinstance(a, dict) and 'frame' in a}
-    pages, transitions, gaps, blocks = [], [], [], []
+    pages, transitions, gaps, blocks, coordinates = [], [], [], [], []
     if recording.get('status') != 'stopped':
         gaps.append({'reason': 'recording_interrupted_or_incomplete', 'state': recording.get('status')})
     previous = None
@@ -94,8 +94,11 @@ def analyze(recording, out, flow_id='recording-candidate', name='录制生成候
             gaps.append({'transition': [edge['from'], edge['to']], 'reason': 'no_recorded_action_or_operator_tap'})
             continue
         width, height = frame['screen'].get('width', 0), frame['screen'].get('height', 0)
-        if not width or not height:
+        if not all(type(v) in (int, float) and math.isfinite(v) and v > 0 for v in (width, height)):
             gaps.append({'page': page['id'], 'reason': 'missing_coordinate_geometry'})
+            continue
+        if not all(type(v) in (int, float) and math.isfinite(v) and 0 <= v < limit for v, limit in zip(point, (width, height))):
+            gaps.append({'page': page['id'], 'reason': 'tap_outside_reference_geometry'})
             continue
         x, y = point[0] / width, point[1] / height
         hits = [l for l in page['locators'] if l['region'][0] <= x <= l['region'][2] and l['region'][1] <= y <= l['region'][3]]
@@ -105,9 +108,18 @@ def analyze(recording, out, flow_id='recording-candidate', name='录制生成候
             continue
         hit = hits[0]
         edge.update(action='operator_annotated_tap', label=hit['text'], tap_pt=point, source='operator_annotation')
-        # Prefer a text selector over blindly replaying the annotated coordinates.
-        blocks += [{'type': 'verify', 'keyword': hit['text'], 'match': 'exact', 'region': hit['region']},
-                   {'type': 'tap', 'keyword': hit['text'], 'match': 'exact', 'region': hit['region']}]
+        # Verify the entry once; replay annotated coordinates, then verify the business endpoint.
+        if index == 0:
+            blocks.append({'type': 'verify', 'keyword': hit['text'], 'match': 'exact', 'region': hit['region']})
+        block = {'type': 'tap', 'name': f"{page['id']}: {hit['text']}", 'x': point[0], 'y': point[1],
+                 'reference_width': width, 'reference_height': height, 'reference_scale': 1}
+        blocks.append(block)
+        coordinates.append({'page_id': page['id'], 'page_name': hit['text'], 'bundle_id': page['bundle_id'],
+            'entry_page': pages[index-1]['id'] if index else None, 'next_page': edge['to'],
+            'sequence': index+1, 'screen': frame['screen'], 'coordinate_unit': 'screen_points',
+            'orientation': frame['screen'].get('orientation', 'portrait' if height > width else 'landscape'),
+            'action': block, 'wait_seconds': None, 'wait_status': 'not_measured',
+            'fallback_locator': hit, 'source': 'operator_annotation', 'verified': False})
     first_bundle = frames[0].get('bundle_id')
     if first_bundle and not pages[0]['withheld']:
         blocks.insert(0, {'type': 'launch_app', 'bundle_id': first_bundle})
@@ -133,6 +145,8 @@ def analyze(recording, out, flow_id='recording-candidate', name='录制生成候
         'business_verified': False, 'privacy': 'private_local_only'}
     private_json(out / 'analysis.json', report)
     private_json(out / 'flow-candidate.json', candidate)
+    private_json(out / 'coordinates.json', {'schema': 'autodam.coordinate-library.v1',
+        'flow_id': flow_id, 'recording_sha256': report['recording_sha256'], 'verified': False, 'steps': coordinates})
     graph = ['flowchart TD']
     for page in pages:
         graph.append(f'  {page["id"].replace("-", "_")}["{page["id"]}: {page["login_state"]}"]')
@@ -142,7 +156,8 @@ def analyze(recording, out, flow_id='recording-candidate', name='录制生成候
     (out / 'navigation.mmd').chmod(0o600)
     notes = ['# 私有录制学习记录', '', '状态：候选经验；未经过真机回放，不可标记签到成功。', '',
              '原生录制只有页面观察时间，不含真实触摸、滑动或触摸时间戳。页面间隔不能直接转换成脚本等待时间。', '',
-             '复用顺序：已有已验证流程 → 当前可访问元素/稳定选择器 → 原生 OCR 文本 → 图像 → 绑定页面与几何的校准坐标。', '',
+             '复用顺序：已验证流程及绑定页面、几何的坐标 → 必要的稳定元素 → 动态数据/结果 OCR → 异常识别。正常固定点击不重新 OCR。', '',
+             'coordinates.json 保存标注坐标、页面转移和设备几何。候选仍未验证；等待时间未知，不能把观察间隔当等待时间。首次真机校准后填写已测等待及回执。', '',
              '登录：优先复用会话与 references/login-workflow.md；仅发生变化时重新采样。', '',
              '恢复：缺失动作、未知弹窗、账号验证或页面不匹配时停在当前页；不要重放未确认的签到。', '',
              f'页面数：{len(pages)}；未解决项：{len(gaps)}。详细定位与登录状态变化见 analysis.json。', '',
