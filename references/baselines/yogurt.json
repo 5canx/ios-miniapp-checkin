@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "verified": "already_today",
+  "observation": {
+    "runner_version": "0.2.5",
+    "host_version": "8.0.80",
+    "ios_version": "15.6.1",
+    "mini_version": "unavailable",
+    "layout": {
+      "width": 428,
+      "height": 926,
+      "scale": 3,
+      "orientation": "portrait"
+    },
+    "flow_sha256": "6af7f78461d1ef5e8ab97128e1ad54b9c6bed6e09748b1e0ae7aa6396e1701cb",
+    "pages": {
+      "wx_home": [
+        "发现",
+        "可见搜索栏",
+        "微信",
+        "通讯录"
+      ],
+      "wx_mini_search": [
+        "搜索",
+        "搜索小程序"
+      ],
+      "wx_results": [
+        "小程序",
+        "目标名称完整匹配"
+      ],
+      "yogurt_home": [
+        "安慕希小程序",
+        "每日签到"
+      ],
+      "yogurt_guide": [
+        "每日签到集安比拼图",
+        "立即参与"
+      ],
+      "yogurt_activity": [
+        "同一行完成计数和已完成",
+        "每日任务",
+        "每日签到",
+        "集安比拼图碎片"
+      ],
+      "return_to_wechat": [
+        "微信首页或小程序搜索结果"
+      ]
+    }
+  }
+}

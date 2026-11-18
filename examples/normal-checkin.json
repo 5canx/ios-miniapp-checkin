@@ -1,0 +1,14 @@
+{
+  "format": "com.witchan.mcpflow.flows",
+  "version": 1,
+  "flows": [
+    {
+      "id": "example-read-receipt",
+      "name": "示例 · 读取当前页签到状态",
+      "blocks": [
+        {"type": "verify", "keyword": "演示积分日历", "match": "exact", "timeout_seconds": 4},
+        {"type": "verify", "keyword": "今日已签到", "match": "exact", "timeout_seconds": 4}
+      ]
+    }
+  ]
+}

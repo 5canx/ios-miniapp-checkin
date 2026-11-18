@@ -1,0 +1,19 @@
+{
+  "runner_version": "demo-1",
+  "host_version": "demo-1",
+  "ios_version": "demo-1",
+  "mini_version": "unavailable",
+  "layout": {
+    "width": 360,
+    "height": 780,
+    "scale": 2,
+    "orientation": "portrait"
+  },
+  "flow_sha256": "53700deb4670abe71adf88ece743ee88b2de4ae9a4b9fd6a37b45dc9280974c6",
+  "pages": {
+    "calendar": [
+      "calendar_title",
+      "daily_row_label"
+    ]
+  }
+}

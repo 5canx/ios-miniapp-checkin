@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "verified": "already_today",
+  "observation": {
+    "runner_version": "0.2.5",
+    "host_version": "8.0.80",
+    "ios_version": "15.6.1",
+    "mini_version": "unavailable",
+    "layout": {
+      "width": 428,
+      "height": 926,
+      "scale": 3,
+      "orientation": "portrait"
+    },
+    "flow_sha256": "406431e9ec3b4e699ae23ef221c4ded12f84d21a7ab7cc9f8ae4c6083446c29e",
+    "pages": {
+      "wx_home": [
+        "发现",
+        "可见搜索栏",
+        "微信",
+        "通讯录"
+      ],
+      "wx_mini_search": [
+        "搜索",
+        "搜索小程序"
+      ],
+      "wx_results": [
+        "小程序",
+        "目标名称完整匹配"
+      ],
+      "storm_home": [
+        "影视飓风Club",
+        "我的",
+        "飓乐部"
+      ],
+      "storm_profile": [
+        "个人中心",
+        "我的订单",
+        "日历签到",
+        "飓乐部"
+      ],
+      "storm_calendar": [
+        "今日已签到",
+        "开启签到提醒",
+        "签到玩法",
+        "签到送好礼"
+      ]
+    }
+  }
+}

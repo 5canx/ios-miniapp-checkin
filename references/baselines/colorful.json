@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "verified": "already_today",
+  "observation": {
+    "runner_version": "0.2.5",
+    "host_version": "8.0.80",
+    "ios_version": "15.6.1",
+    "mini_version": "unavailable",
+    "layout": {
+      "width": 428,
+      "height": 926,
+      "scale": 3,
+      "orientation": "portrait"
+    },
+    "flow_sha256": "fcada07d40cd43e64820689827bb91a0974de52df96aac4dc900db4f6c489306",
+    "pages": {
+      "wx_home": [
+        "发现",
+        "可见搜索栏",
+        "微信",
+        "通讯录"
+      ],
+      "wx_mini_search": [
+        "搜索",
+        "搜索小程序"
+      ],
+      "wx_results": [
+        "小程序",
+        "目标名称完整匹配"
+      ],
+      "colorful_home": [
+        "俱乐部",
+        "商城",
+        "我的",
+        "欢迎来到七彩虹主场"
+      ],
+      "colorful_profile": [
+        "我的地址",
+        "我的点赞",
+        "我的订单",
+        "签到"
+      ],
+      "colorful_panel": [
+        "每日签到",
+        "签到领取积分&经验值"
+      ],
+      "colorful_ledger": [
+        "同笔签到正积分和设备当日日期",
+        "我的积分",
+        "积分明细"
+      ]
+    }
+  }
+}

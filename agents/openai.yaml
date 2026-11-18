@@ -1,0 +1,4 @@
+interface:
+  display_name: "iOS 小程序签到"
+  short_description: "复用已验证的小程序页面与流程，在 iPhone 上核验签到回执并安全导入 autodam"
+  default_prompt: "用 $ios-miniapp-checkin 复用已有流程，确认今天的签到状态，记录可见回执。"
