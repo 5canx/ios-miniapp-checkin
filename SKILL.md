@@ -59,3 +59,5 @@ python3 scripts/reuse.py plan examples/observation.json
 ```
 
 结合 [弹窗示例](examples/popup-handling.md) 与 [断线示例](examples/recovery.md) 检查恢复分支。
+
+迁移 AutoGo 时先读 [华硕原实现对照](references/autogo-migration.md)，同时复用动作方式、坐标单位和等待，不把原生控件点击误当固定触摸。
