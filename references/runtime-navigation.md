@@ -34,3 +34,13 @@ UI 操作有前后依赖，保持串行；当前 OCR worker 本身串行。不�
 生成器和 ActivitySkill 继续复用原生导航，运行器升级后新建候选并重新校准、验证；不要直接改写旧稳定版本的证明。
 
 本轮还验证了 HOME、CONTACTS、SEARCH、CHAT（可按住转文字）、ACTIVITY 五种真机起点；未登记设置页 UNKNOWN 按预期安全停止。活动页复用仅 1 次 OCR、没有触控或输入。POPUP/登录挑战未人为触发，不宣称已完成这类真机回归。ActivitySkill 新候选的真机 verify 与独立 CLI replay 均通过，当前积分/余额读到，旧稳定版保留；原始证据在 `~/Library/Application Support/ActivitySkill/bridge/runs`。
+
+## 2026-11-19 补充：内置与外部引擎须区分
+
+正常任务通过 MCP 使用 PP-OCRv5 Mobile / ORT；不是 AutoDam 本体已链接 PaddlePaddle。AutoDam 另有 Apple Vision 失败截图脱敏代码，不代表任务正常走 Vision。AutoGo 现有 SDK 原生库使用 NCNN 和内嵌 V5 Mobile；本地 Go 代码是桩，不能拿 nil 返回的耗时当真机测试。
+
+同一真实 428×926 图像、5 次组件测试（后 4 次中位数）：NCNN 原生调用全屏约 451ms、顶部区域 19ms；已安装 ONNX worker 回路约 1787ms / 184ms。NCNN 不含采集、Go/CGo 包装，worker 包含 IPC/解码，且预处理不同，不能把倍数说成“只要内置就能提升这么多”。小样本公共可见锚点均匹配，不等于已验证积分金额识别率。
+
+worker 已复用模型，正常热请求不反复初始化；每次模型校验约 9ms，不是主要瓶颈。Paddle 的 fast 参数不会换一套模型。现有 AutoGo 帮助函数却每次 New/Close，Best 还跑两套模型，不要盲目复制这部分。
+
+独立原生截屏未通过，USB screenshotr 未开启；不要编造原始帧接口。独立进程 Vision 默认和 CPU-only 请求也失败，根因待定位，不默认切换。若开发本地后端，应先复用已允许的采集来源，验证真实小字/数字和坐标映射，独立后台 worker 保留原后端回退。此轮未替换生产引擎，不宣称已完成整流程加速。
