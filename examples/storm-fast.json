@@ -1,0 +1,135 @@
+{
+  "format": "com.witchan.mcpflow.flows",
+  "version": 1,
+  "flows": [
+    {
+      "id": "storm-calendar-fast",
+      "name": "影视飓风 Club 日历签到（0.4.2）",
+      "schedule_enabled": false,
+      "blocks": [
+        {
+          "type": "open_mini",
+          "task": "storm"
+        },
+        {
+          "step": "check_login",
+          "task": "storm",
+          "type": "mini_step"
+        },
+        {
+          "arguments": {
+            "duration": 550,
+            "fromX": 301,
+            "fromY": 765,
+            "toX": 301,
+            "toY": 420
+          },
+          "name": "swipe_screen",
+          "type": "tool"
+        },
+        {
+          "seconds": 0.65,
+          "type": "wait"
+        },
+        {
+          "action": "tap",
+          "reference_height": 926,
+          "reference_scale": 1,
+          "reference_width": 428,
+          "type": "tap",
+          "x": 259,
+          "y": 586
+        },
+        {
+          "seconds": 0.65,
+          "type": "wait"
+        },
+        {
+          "regions": {
+            "storm_result": [
+              0.17,
+              0.395,
+              0.83,
+              0.56
+            ],
+            "storm_sign": [
+              0.27,
+              0.465,
+              0.73,
+              0.535
+            ],
+            "storm_status": [
+              0.028816199,
+              0.160547156,
+              0.269470405,
+              0.183225342
+            ],
+            "wx_home_tabs": [
+              0.031152648,
+              0.878329734,
+              0.968847352,
+              1
+            ],
+            "wx_query_text": [
+              0.031152648,
+              0.043196544,
+              0.825545171,
+              0.125989921
+            ],
+            "wx_search_cancel": [
+              0.786604361,
+              0.021598272,
+              1,
+              0.151187905
+            ]
+          },
+          "step": "sign_if_needed",
+          "task": "storm",
+          "type": "mini_step"
+        },
+        {
+          "regions": {
+            "storm_result": [
+              0.17,
+              0.395,
+              0.83,
+              0.56
+            ],
+            "storm_status": [
+              0.028816199,
+              0.160547156,
+              0.269470405,
+              0.183225342
+            ],
+            "wx_home_tabs": [
+              0.031152648,
+              0.878329734,
+              0.968847352,
+              1
+            ],
+            "wx_query_text": [
+              0.031152648,
+              0.043196544,
+              0.825545171,
+              0.125989921
+            ],
+            "wx_search_cancel": [
+              0.786604361,
+              0.021598272,
+              1,
+              0.151187905
+            ]
+          },
+          "step": "check_receipt",
+          "task": "storm",
+          "type": "mini_step"
+        },
+        {
+          "step": "close_mini",
+          "task": "storm",
+          "type": "mini_step"
+        }
+      ]
+    }
+  ]
+}

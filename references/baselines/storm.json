@@ -2,8 +2,8 @@
   "version": 1,
   "verified": "already_today",
   "observation": {
-    "runner_version": "0.3.4",
-    "host_version": "8.0.80",
+    "runner_version": "0.4.2",
+    "host_version": "8.0.80.34",
     "ios_version": "15.6.1",
     "mini_version": "unavailable",
     "layout": {
@@ -12,7 +12,7 @@
       "scale": 3,
       "orientation": "portrait"
     },
-    "flow_sha256": "93a2840c12253577e5efa49352dc64e4cc94eac5bb3828f729b8ca6d7bf22bea",
+    "flow_sha256": "2fdbbe6b078fc65c90411d4be7fce73547f82caf6d69e7f5b18300b787465494",
     "pages": {
       "wx_home": [
         "发现",

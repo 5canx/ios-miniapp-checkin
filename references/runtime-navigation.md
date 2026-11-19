@@ -1,4 +1,6 @@
-# AutoDam 0.3.20：运行性能与页面状态
+# AutoDam：运行性能与页面状态
+
+0.4.2 最新影视飓风结果与组合导航规则见 [快速流程与悬浮球](storm-fast-0.4.2.md)。下文 0.3.20 性能数字保留作历史对照；最新组合导航将输入回读并入结果卡检查，独立 mini_nav 块仍保留原契约。
 
 运行固定任务先用 `link.py read` 取得现有流程，复用 `open_mini` 或四个 `mini_nav`。不要在 Skill 外再包一套搜索/返回循环。AutoDam 的 `CNWechatPageState` 和 `navigateTo` 按当前页面选择已验证的下一条边。导航状态包括 HOME、CONTACTS、DISCOVER、ME、HOST_TAB、SEARCH、MINI_SEARCH、SEARCH_OTHER、RESULTS、TARGET_MINI、ACTIVITY、OTHER_MINI、CHAT、POPUP、AUTH_REQUIRED、UNKNOWN。
 
