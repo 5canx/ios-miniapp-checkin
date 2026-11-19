@@ -87,9 +87,9 @@
     "No verified swipe or one-click login coordinates in this record."
   ],
   "current_recheck": {
-    "runner": "0.3.6",
+    "runner": "0.3.20",
     "date": "2026-11-19",
-    "result": "blocked_at_category_transition",
-    "notes": "Home search opened. Category transition stalled; user reports WeChat/system UI frozen. Keep historical coordinates; no evidence proves they are invalid. Paused tests for UI recovery."
+    "result": "shared_navigation_verified_on_storm",
+    "notes": "Shared WeChat search/navigation passed on Storm. Search animation must settle at calibrated category point before tapping. Full ASUS business flow was not rerun in this optimization round."
   }
 }

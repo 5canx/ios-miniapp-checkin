@@ -13,8 +13,9 @@ description: 在已授权的 iPhone 上用 autodam 和 iOS MCP 编辑、迁移�
 
 1. 确认用户本次要做的事、目标小程序和动作范围。只要求写脚本或自行测试时，在本机完成准备。需要真实运行时，记录设备当地日期、时区、屏幕方向、逻辑尺寸和缩放。
 2. 先读 [USB 联动与自主开发](references/control-link.md)，用 `scripts/link.py discover` 核对真实安装，再用 `read` 取得设备当前流程及版本。读取 [运行器与部署](references/app-architecture.md)、[业务路径与回执](references/checkin-workflow.md)、[已验证基线索引](references/baselines/README.md) 及目标流程。先查同任务私有已验证记录，其次读随 Skill 发布的任务基线。优先通过控制服务读取当前流程；旧版设备才用编辑器导出，包内预设是备选。先看旧版本、校准区域、步骤顺序、最后一次实机回执和失败位置。把截图、录屏和完整导出留在用户自己的目录。
-3. 在已授权连接中，检查只读工具清单、设备响应和前台页面。前台 bundle、界面树与当前截图矛盾时先消除矛盾；以输入、点击作为探活会影响页面。[页面识别](references/page-navigation.md)
-4. 取得包版本及宿主版本，用 `scripts/flow.py validate` 计算功能块摘要。按 [指纹样例](examples/observation.json) 填写稳定语义锚点 ID，去掉昵称、金额、日期等可变文本。按下面的命令判断此次需复查的位置。没有基线时，先读已有业务路径并确认首个页面。基线吻合时沿原流程执行，逐一核对运行中遇到的页面。页面指纹变化时重新采样该页及其直接后置页面；包或运行器升级时核查执行能力和入口；旋转、缩放变化时复核坐标。把已获实机回执的完整新记录写为一版新基线。
+3. 排查慢或起始页不固定时先读 [运行性能与状态导航](references/runtime-navigation.md)，沿用原生状态导航，不另写固定次数返回。
+4. 在已授权连接中，检查只读工具清单、设备响应和前台页面。前台 bundle、界面树与当前截图矛盾时先消除矛盾；以输入、点击作为探活会影响页面。[页面识别](references/page-navigation.md)
+5. 取得包版本及宿主版本，用 `scripts/flow.py validate` 计算功能块摘要。按 [指纹样例](examples/observation.json) 填写稳定语义锚点 ID，去掉昵称、金额、日期等可变文本。按下面的命令判断此次需复查的位置。没有基线时，先读已有业务路径并确认首个页面。基线吻合时沿原流程执行，逐一核对运行中遇到的页面。页面指纹变化时重新采样该页及其直接后置页面；包或运行器升级时核查执行能力和入口；旋转、缩放变化时复核坐标。把已获实机回执的完整新记录写为一版新基线。
 
 ```sh
 python3 scripts/flow.py validate flow-export.json --id FLOW_ID
