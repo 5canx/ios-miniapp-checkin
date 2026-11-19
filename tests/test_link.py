@@ -44,6 +44,7 @@ class LinkTests(unittest.TestCase):
     def test_receipts_are_read_without_trusting_parent_overlay_listing(self):
         connection = object.__new__(link.Link)
         connection.root = '/state'
+        connection.info = {'capabilities': []}
         class Files:
             def call(self, name, path):
                 rows = {'/state/runs/run': [], '/state/checkin-records': ['2026-11-18'],

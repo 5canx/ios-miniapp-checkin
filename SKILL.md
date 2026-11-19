@@ -25,6 +25,10 @@ python3 scripts/reuse.py plan observed.json --baseline last-verified.json
 
 有未到达的已知页面时，工具返回 `reuse_observed` 并列出 `pending_pages`；每到一页重新核对。验证码或权限层出现时用 `--gate verification` 或 `--gate privacy` 等声明当前关口，优先暂停至用户处理。
 
+## 连续任务和通知
+
+使用 0.4.1 的任务控制台、批次队列、事件回传或 Telegram/WxPusher 时，读取 [队列、区域 OCR 与通知](references/queue-notifications.md)。先复用现有流程；失败或中断不得盲目重放业务动作。通知凭据只在手机安全存储配置。
+
 ## 执行与验收
 
 - 连接服务只在实际调用设备工具时探活。通过 `tool_schema` 获取设备真实 UI 工具参数，用 `sample` 取当前页，复用已有页面图和定位规则。新增需求依次完成读取旧经验、取缺失样本、修改标准功能块、带版本部署、运行、回传证据、修复和回归，详见联动说明。

@@ -127,6 +127,8 @@ class Link:
         dest = self.local / 'runs' / identifier
         status = json.loads(self.read_bytes(remote + '/status.json'))
         save(dest / 'status.json', status)
+        if 'run_events' in self.info.get('capabilities', []):
+            save(dest / 'events.json', self.control('events', run_id=identifier)['events'])
         entries = {e['name'] for e in self.client.call('list_dir', path=remote)['entries']}
         manifest = json.loads(self.read_bytes(remote + '/pages.json')) if 'pages.json' in entries else {'pages': [], 'edges': [], 'reason': 'no page was captured before termination'}
         save(dest / 'pages.json', manifest)
@@ -145,10 +147,16 @@ class Link:
         if 'login.json' in entries:
             save(dest / 'login.json', self.read_bytes(remote + '/login.json'))
         receipts = []
+        for task in ('asus', 'storm', 'yogurt', 'colorful'):
+            filename = 'receipt-' + task + '.json'
+            if filename in entries:
+                data = self.read_bytes(remote + '/' + filename)
+                save(dest / filename, data)
+                receipts.append({'task': task, 'outcome': json.loads(data).get('outcome')})
         receipt_error = None
         try:
             # RootHide can list a parent overlay without its daemon-created children.
-            dates = self.client.call('list_dir', path=self.root + '/checkin-records')['entries']
+            dates = [] if receipts else self.client.call('list_dir', path=self.root + '/checkin-records')['entries']
         except ValueError as error:
             dates = []
             receipt_error = str(error)
@@ -207,7 +215,7 @@ class Link:
             else:
                 state = self.control('status', nonce=nonce)
             manual = state['manual']
-            terminal = state['runtime'].get('nonce') == nonce and state['runtime'].get('state') in ('succeeded', 'failed', 'stopped', 'interrupted')
+            terminal = state['runtime'].get('nonce') == nonce and state['runtime'].get('state') in ('succeeded', 'failed', 'stopped', 'interrupted', 'timed_out')
             if terminal or (manual.get('nonce') == nonce and manual.get('state') in ('succeeded', 'failed')):
                 runtime = state['runtime']
                 try:
@@ -277,12 +285,12 @@ class Link:
             result = analyze(document, output, **args)
             result['recording_directory'] = recording['local_directory']
             return result
-        require(op in ('list', 'status', 'run', 'pause', 'resume', 'stop', 'rollback', 'recorder'), 'unknown operation')
+        require(op in ('list', 'status', 'run', 'pause', 'resume', 'stop', 'rollback', 'recorder', 'history', 'events'), 'unknown operation')
         return self.control(op, **args)
 
 
 def mcp(link):
-    schema = {'type': 'object', 'properties': {'operation': {'type': 'string', 'enum': ['discover', 'list', 'read', 'deploy', 'run', 'status', 'watch', 'pause', 'resume', 'stop', 'rollback', 'sample', 'fetch', 'device', 'tool_schema', 'capture', 'recorder', 'recording_fetch', 'learn']}, 'arguments': {'type': 'object'}}, 'required': ['operation']}
+    schema = {'type': 'object', 'properties': {'operation': {'type': 'string', 'enum': ['discover', 'list', 'read', 'deploy', 'run', 'status', 'watch', 'pause', 'resume', 'stop', 'rollback', 'sample', 'fetch', 'device', 'tool_schema', 'capture', 'recorder', 'recording_fetch', 'learn', 'history', 'events', 'batch', 'batch_start', 'batch_resume', 'batch_stop', 'batch_retry', 'batch_skip']}, 'arguments': {'type': 'object'}}, 'required': ['operation']}
     for line in sys.stdin:
         request = {}
         try:
